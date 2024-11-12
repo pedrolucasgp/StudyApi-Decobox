@@ -53,13 +53,13 @@ namespace StudyApi.Services.Opinion
             }
         }
 
-        public async Task<ResponseModel<List<OpinionModel>>> DeleteOpinion(int idOpinion)
+        public async Task<ResponseModel<List<OpinionModel>>> DeleteOpinion(int id)
         {
             ResponseModel<List<OpinionModel>> response = new ResponseModel<List<OpinionModel>>();
 
             try
             {
-                var opinion = await _context.Opinions.FirstOrDefaultAsync(x => x.Id == idOpinion);
+                var opinion = await _context.Opinions.FirstOrDefaultAsync(x => x.Id == id);
 
 
                 if (opinion == null)
@@ -144,12 +144,12 @@ namespace StudyApi.Services.Opinion
             }
         }
 
-        public async Task<ResponseModel<OpinionModel>> SearchOpinionById(int idOpinion)
+        public async Task<ResponseModel<OpinionModel>> SearchOpinionById(int id)
         {
             ResponseModel<OpinionModel> response = new ResponseModel<OpinionModel>();
             try
             {
-                var opinion = await _context.Opinions.Include(u => u.User).FirstOrDefaultAsync(x => x.Id == idOpinion);
+                var opinion = await _context.Opinions.Include(u => u.User).FirstOrDefaultAsync(x => x.Id == id);
 
                 if (opinion == null)
                 {
@@ -172,12 +172,12 @@ namespace StudyApi.Services.Opinion
             }
         }
 
-        public async Task<ResponseModel<List<OpinionModel>>> SearchOpinionByUserUsername(string uUsername)
+        public async Task<ResponseModel<List<OpinionModel>>> SearchOpinionByUserUsername(string username)
         {
             ResponseModel<List<OpinionModel>> response = new ResponseModel<List<OpinionModel>>();
             try
             {
-                var opinion = await _context.Opinions.Include(u => u.User).Where(o => o.User.Username == uUsername).ToListAsync();
+                var opinion = await _context.Opinions.Include(u => u.User).Where(o => o.User.Username == username).ToListAsync();
 
                 if (opinion == null)
                 {

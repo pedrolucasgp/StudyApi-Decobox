@@ -6,7 +6,6 @@ using StudyApi.Services.User;
 
 namespace StudyApi.Controllers
 {
-    [Authorize]
     [Route("api")]
     [ApiController]
     public class UserController : ControllerBase
@@ -19,6 +18,7 @@ namespace StudyApi.Controllers
             _userInterface = userInterface;
         }
 
+        [Authorize]
         [HttpGet("users")]
         public async Task<ActionResult<ResponseModel<List<UserModel>>>> ListUsers()
         {
@@ -26,17 +26,20 @@ namespace StudyApi.Controllers
             return Ok(users);
         }
 
-        [HttpGet("users/{idUser}")]
-        public async Task<ActionResult<ResponseModel<UserModel>>> SearchUserById(int idUser)
+        [Authorize]
+        [HttpGet("users/id/{id}")]
+        public async Task<ActionResult<ResponseModel<UserModel>>> SearchUserById(int id)
         {
-            var user = await _userInterface.SearchUserById(idUser);
+            var user = await _userInterface.SearchUserById(id);
             return Ok(user);
 
         }
-        [HttpGet("users/{uUsername}")]
-        public async Task<ActionResult<ResponseModel<UserModel>>> SearchUserByUsername(string uUsername)
+
+        [Authorize]
+        [HttpGet("users/{username}")]
+        public async Task<ActionResult<ResponseModel<UserModel>>> SearchUserByUsername(string username)
         {
-            var user = await _userInterface.SearchUserByUsername(uUsername);
+            var user = await _userInterface.SearchUserByUsername(username);
             return Ok(user);
 
         }
@@ -48,6 +51,7 @@ namespace StudyApi.Controllers
             return Ok(users);
         }
 
+        [Authorize]
         [HttpPut("users")]
         public async Task<ActionResult<ResponseModel<List<UserModel>>>> EditUser(UserDto UserDto)
         {
@@ -55,10 +59,11 @@ namespace StudyApi.Controllers
             return Ok(users);
         }
 
+        [Authorize]
         [HttpDelete("users")]
-        public async Task<ActionResult<ResponseModel<List<UserModel>>>> DeleteUser(int idUser)
+        public async Task<ActionResult<ResponseModel<List<UserModel>>>> DeleteUser(int id)
         {
-            var users = await _userInterface.DeleteUser(idUser);
+            var users = await _userInterface.DeleteUser(id);
             return Ok(users);
 
         }

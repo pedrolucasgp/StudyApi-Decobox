@@ -1,24 +1,31 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using StudyApi.Account;
 using StudyApi.Data;
+using StudyApi.Services.Identity;
 using StudyApi.Services.Opinion;
 using StudyApi.Services.User;
+using StudyApi.Settings;
 using System.Text;
 
-string secretKey = "d5382cf9-80b1-4886-be94-63a3c3bd743d";
 
 var builder = WebApplication.CreateBuilder(args);
+
+var jwtSettings = builder.Configuration.GetSection("jwt");
 
 // Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
+builder.Services.AddInfrascructureSwagger();
 
 builder.Services.AddScoped<IUserInterface, UserService>();
 builder.Services.AddScoped<IOpinionInterface, OpinionService>();
+builder.Services.AddScoped<IAuthenticate, AuthenticateService>();
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("jwt"));
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -37,9 +44,9 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = "deco",
-        ValidAudience = "StudyApi",
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+        ValidIssuer = jwtSettings["issuer"],
+        ValidAudience = jwtSettings["audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["secretkey"]))
     };
 });
 
@@ -55,8 +62,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-app.UseAuthorization();
-
 app.UseAuthorization();
 
 app.MapControllers();

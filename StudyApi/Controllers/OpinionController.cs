@@ -26,17 +26,17 @@ namespace StudyApi.Controllers
             return Ok(opinions);
         }
 
-        [HttpGet("opinions/{idOpinion}")]
-        public async Task<ActionResult<ResponseModel<OpinionModel>>> SearchOpinionById(int idOpinion)
+        [HttpGet("opinions/id/{id}")]
+        public async Task<ActionResult<ResponseModel<OpinionModel>>> SearchOpinionById(int id)
         {
-            var opinions = await _opinionInterface.SearchOpinionById(idOpinion);
+            var opinions = await _opinionInterface.SearchOpinionById(id);
             return Ok(opinions);
 
         }
-        [HttpGet("opinions/{uUsername}")]
-        public async Task<ActionResult<ResponseModel<OpinionModel>>> SearchOpinionByUserUsername(string uUsername)
+        [HttpGet("opinions/user/{username}")]
+        public async Task<ActionResult<ResponseModel<OpinionModel>>> SearchOpinionByUserUsername(string username)
         {
-            var opinions = await _opinionInterface.SearchOpinionByUserUsername(uUsername);
+            var opinions = await _opinionInterface.SearchOpinionByUserUsername(username);
             return Ok(opinions);
 
         }
@@ -56,9 +56,9 @@ namespace StudyApi.Controllers
         }
 
         [HttpDelete("opinions")]
-        public async Task<ActionResult<ResponseModel<List<OpinionModel>>>> DeleteOpinion(int idOpinion)
+        public async Task<ActionResult<ResponseModel<List<OpinionModel>>>> DeleteOpinion(int id)
         {
-            var opinions = await _opinionInterface.DeleteOpinion(idOpinion);
+            var opinions = await _opinionInterface.DeleteOpinion(id);
             return Ok(opinions);
 
         }
